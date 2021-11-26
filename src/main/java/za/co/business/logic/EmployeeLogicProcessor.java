@@ -2,15 +2,14 @@ package za.co.business.logic;
 
 import java.util.List;
 
+import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import za.co.business.dtos.EmployeePersistRequest;
 import za.co.business.model.Employee;
 import za.co.business.repositories.EmployeeRepository;
-import za.co.business.utils.Utils;
 
 @Component
 public class EmployeeLogicProcessor {
@@ -28,15 +27,18 @@ public class EmployeeLogicProcessor {
 		return employees;
 	}
 
-	public Employee getOne(Long employeeId) {
-		Employee employee = employeeRepository.getOne(employeeId);
+
+
+	public Employee findByEmployeeId(String id) {
+		Employee employee =null;
+		if(StringUtils.isNotEmpty(id) && StringUtils.isNumeric(id) ) {
+			Long employeeId=Long.parseLong(id);
+			employee = employeeRepository.findByEmployeeId(employeeId);
+		}
 		return employee;
 	}
 
-	public Employee findById(Long employeeId) {
-		Employee employee = employeeRepository.findByEmployeeId(employeeId);
-		return employee;
-	}
+
 	
 /* for security reasons the following will not be allowed
 
