@@ -1,6 +1,6 @@
-# Business Dashboard Spring Boot Microservice
+# Business Persistence Spring Boot Microservice
 
-## THIS IS A BRAND NEW PROJECT CREATED 20 November 2021
+## THIS IS A BRAND NEW PROJECT CREATED 25 November 2021
 
 
 ## Aim of this Project
