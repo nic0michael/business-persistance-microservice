@@ -25,11 +25,8 @@ public class Customer {
 	@Column(name = "name", length=256)
 	private String name;
 	
-	@Column(name = "table_nr")
-	private Integer tableNr;
-
-	@Column(name = "car_regristration_nr", length=256)
-	private String carRegristrationNr;
+	@Column(name = "credits")
+	private Long credits;
 	
 	@Column(name = "delivery_address", length=256)
 	private String deliveryAddress;
@@ -42,6 +39,16 @@ public class Customer {
 	
 	@Column(name = "cell_phone", length=128)
 	private String cellPhone;
+	
+	
+
+	public Long getCredits() {
+		return credits;
+	}
+
+	public void setCredits(Long credits) {
+		this.credits = credits;
+	}
 
 	public Timestamp getDateCreated() {
 		return dateCreated;
@@ -60,22 +67,6 @@ public class Customer {
 	}
 
 
-
-	public Integer getTableNr() {
-		return tableNr;
-	}
-
-	public void setTableNr(Integer tableNr) {
-		this.tableNr = tableNr;
-	}
-
-	public String getCarRegristrationNr() {
-		return carRegristrationNr;
-	}
-
-	public void setCarRegristrationNr(String carRegristrationNr) {
-		this.carRegristrationNr = carRegristrationNr;
-	}
 
 	public Long getCustomerId() {
 		return customerId;
@@ -115,11 +106,13 @@ public class Customer {
 
 	@Override
 	public String toString() {
-		return "Customer [customerId=" + customerId + ", dateCreated=" + dateCreated + ", name=" + name + ", tableNr="
-				+ tableNr + ", carRegristrationNr=" + carRegristrationNr + ", deliveryAddress=" + deliveryAddress
-				+ ", invoiceAddress=" + invoiceAddress + ", emailAddress=" + emailAddress + ", cellPhone=" + cellPhone
-				+ "]";
+		return "Customer [customerId=" + customerId + ", dateCreated=" + dateCreated + ", name=" + name + ", credits="
+				+ credits + ", deliveryAddress=" + deliveryAddress + ", invoiceAddress=" + invoiceAddress
+				+ ", emailAddress=" + emailAddress + ", cellPhone=" + cellPhone + "]";
 	}
+
+
+
 
 
 	

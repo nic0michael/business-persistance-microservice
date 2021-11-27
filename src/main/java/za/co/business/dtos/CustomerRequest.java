@@ -15,6 +15,15 @@ public class CustomerRequest {
 	private String invoiceAddress;
 	private String emailAddress;
 	private String cellPhone;
+	private Long credits;
+	
+	
+	public Long getCredits() {
+		return credits;
+	}
+	public void setCredits(Long credits) {
+		this.credits = credits;
+	}
 	public Long getCustomerId() {
 		return customerId;
 	}
@@ -74,8 +83,10 @@ public class CustomerRequest {
 		return "CustomerRequest [customerId=" + customerId + ", dateCreated=" + dateCreated + ", name=" + name
 				+ ", tableNr=" + tableNr + ", carRegristrationNr=" + carRegristrationNr + ", deliveryAddress="
 				+ deliveryAddress + ", invoiceAddress=" + invoiceAddress + ", emailAddress=" + emailAddress
-				+ ", cellPhone=" + cellPhone + "]";
+				+ ", cellPhone=" + cellPhone + ", credits=" + credits + "]";
 	}
+
+
 	
 
 }

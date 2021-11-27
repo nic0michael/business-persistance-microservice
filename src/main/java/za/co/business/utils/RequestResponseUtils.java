@@ -27,12 +27,11 @@ public class RequestResponseUtils {
 	public static Customer updateCustomer(Customer customer, CustomerRequest customerDto) {
 		
 		customer.setName(customerDto.getName());
-		customer.setTableNr(customerDto.getTableNr());
-		customer.setCarRegristrationNr(customerDto.getCarRegristrationNr());
 		customer.setDeliveryAddress(customerDto.getDeliveryAddress());
 		customer.setInvoiceAddress(customerDto.getInvoiceAddress());
 		customer.setEmailAddress(customerDto.getEmailAddress());
 		customer.setCellPhone(customerDto.getCellPhone());		
+		customer.setCredits(null);
 
 		return customer;
 	}
