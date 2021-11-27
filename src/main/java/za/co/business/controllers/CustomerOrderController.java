@@ -2,8 +2,11 @@ package za.co.business.controllers;
 
 import java.util.List;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -15,8 +18,9 @@ import za.co.business.logic.CustomerOrderLogicProcessor;
 import za.co.business.model.CustomerOrder;
 
 @RestController
-@RequestMapping("/business-persistance/customer-order")
+@RequestMapping("/business-persistance/v1/customer-order")
 public class CustomerOrderController {
+	private static final Logger log = LoggerFactory.getLogger(CustomerOrderController.class);
 	
 	@Autowired
 	CustomerOrderLogicProcessor  processor;
@@ -30,7 +34,7 @@ public class CustomerOrderController {
 	
 	@PostMapping(value = "/list/{id}", 
 			produces = { MediaType.APPLICATION_XML_VALUE, MediaType.APPLICATION_JSON_VALUE })
-	public CustomerOrder  findByCustomerId(@RequestParam String id){		
+	public CustomerOrder  findByCustomerId(@PathVariable String id){		
 		return processor.findByCustomerOrderId(id);
 	}
 

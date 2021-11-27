@@ -2,8 +2,11 @@ package za.co.business.controllers;
 
 import java.util.List;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -13,8 +16,10 @@ import za.co.business.logic.EmployeeLogicProcessor;
 import za.co.business.model.Employee;
 
 @RestController
-@RequestMapping("/business-persistance/employee")
+@RequestMapping("/business-persistance/v1/employee")
 public class EmployeeController {
+	private static final Logger log = LoggerFactory.getLogger(EmployeeController.class);
+	
 	@Autowired
 	EmployeeLogicProcessor processor;
 	
@@ -26,7 +31,7 @@ public class EmployeeController {
 	
 	@PostMapping(value = "/list/{id}", 
 			produces = { MediaType.APPLICATION_XML_VALUE, MediaType.APPLICATION_JSON_VALUE })
-	public Employee  findByCustomerId(@RequestParam String id){		
+	public Employee  findByCustomerId(@PathVariable String id){		
 		return processor.findByEmployeeId(id);
 	}
 

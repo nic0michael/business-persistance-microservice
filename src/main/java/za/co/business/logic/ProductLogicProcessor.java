@@ -3,6 +3,8 @@ package za.co.business.logic;
 import java.util.List;
 
 import org.apache.commons.lang3.StringUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -14,6 +16,7 @@ import za.co.business.utils.RequestResponseUtils;
 
 @Component
 public class ProductLogicProcessor {
+	private static final Logger log = LoggerFactory.getLogger(ProductLogicProcessor.class);
 	
 	@Autowired
 	ProductRepository repository;
