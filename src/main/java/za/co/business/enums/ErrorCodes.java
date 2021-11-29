@@ -1,12 +1,12 @@
 package za.co.business.enums;
 
 public enum ErrorCodes {
-	SUCCESS("200","Message Request processed successfully"), 
+	SUCCESS("200","Request processed successfully"), 
 	INVALID_REQUEST("ANT300", "Invalid or missing request payload."),
 	INVALID_MEASUREMENT_TYPE("ANT301", "The measurementType field is missing or empty"),
 	INVALID_FIELD_ANTENNA_CODES("ANT302", "The antennaCodes field is missing or empty"),
-	MEASUREMENT_SERVICE_FAILURE("ANT400", "Failed to retrieve Measurement valies from Measurement Service"),
-	MEASUREMENT_FROM_DATABASE_FAILURE("ANT401", "Failed to retrieve Measurement valies from Antenna Database");
+	BUSINESS_SERVICE_FAILURE("ANT400", "Failed to retrieve valUes from Business Service"),
+	BUSINESS_FROM_DATABASE_FAILURE("ANT401", "Failed to retrieve valies from Business Database");
 
 	String code;
 	String message;

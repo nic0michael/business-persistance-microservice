@@ -8,6 +8,9 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import za.co.business.dtos.AuthenticationRequest;
+import za.co.business.dtos.AuthenticationResponse;
+import za.co.business.enums.ErrorCodes;
 import za.co.business.model.Employee;
 import za.co.business.repositories.EmployeeRepository;
 
@@ -36,6 +39,52 @@ public class EmployeeLogicProcessor {
 			employee = employeeRepository.findByEmployeeId(employeeId);
 		}
 		return employee;
+	}
+
+
+
+	public AuthenticationResponse authenticate(AuthenticationRequest authenticationRequest) {
+		AuthenticationResponse response = new AuthenticationResponse();
+		Employee employee =null;
+		String userId=null;
+		String password=null;
+		if(authenticationRequest!=null && StringUtils.isNotEmpty(authenticationRequest.getUserIdHash()) 
+				&& StringUtils.isNotEmpty(authenticationRequest.getPasswordHash()) ) {
+			
+			userId=decrypt(authenticationRequest.getUserIdHash());
+			password=decrypt(authenticationRequest.getPasswordHash());
+			employee = employeeRepository.findByUserId(userId);
+			
+			if(employee==null) {
+				response.setResponseCode(ErrorCodes.BUSINESS_FROM_DATABASE_FAILURE.getCode());
+				response.setResponseMessage(ErrorCodes.BUSINESS_FROM_DATABASE_FAILURE.getMessage());
+			} else  if(StringUtils.isNotEmpty(employee.getPassword()) && StringUtils.isNotEmpty(employee.getUserId())
+				&& password.equals(employee.getPassword()) 
+				&& userId.equals(employee.getUserId()) ){
+				
+					response.setResponseCode(ErrorCodes.SUCCESS.getCode());
+					response.setResponseMessage(ErrorCodes.SUCCESS.getMessage());
+					
+			}else{
+					response.setResponseCode(ErrorCodes.BUSINESS_FROM_DATABASE_FAILURE.getCode());
+					response.setResponseMessage(ErrorCodes.BUSINESS_FROM_DATABASE_FAILURE.getMessage());
+					
+				
+			}
+			
+		} else {
+			response.setResponseCode(ErrorCodes.BUSINESS_FROM_DATABASE_FAILURE.getCode());
+			response.setResponseMessage(ErrorCodes.BUSINESS_FROM_DATABASE_FAILURE.getMessage());		
+		}
+		
+		return response;
+		
+	}
+
+
+
+	private String decrypt(String value) {
+		return value;
 	}
 
 
