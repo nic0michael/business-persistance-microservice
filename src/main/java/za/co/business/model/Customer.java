@@ -23,7 +23,7 @@ public class Customer {
 	private Timestamp dateCreated;
 
 	@Column(name = "name", length=256)
-	private String name;
+	private String name; 
 	
 	@Column(name = "credits")
 	private Long credits;
@@ -39,16 +39,6 @@ public class Customer {
 	
 	@Column(name = "cell_phone", length=128)
 	private String cellPhone;
-	
-	
-
-	public Long getCredits() {
-		return credits;
-	}
-
-	public void setCredits(Long credits) {
-		this.credits = credits;
-	}
 
 	public Timestamp getDateCreated() {
 		return dateCreated;
@@ -67,6 +57,15 @@ public class Customer {
 	}
 
 
+
+
+	public Long getCredits() {
+		return credits;
+	}
+
+	public void setCredits(Long credits) {
+		this.credits = credits;
+	}
 
 	public Long getCustomerId() {
 		return customerId;

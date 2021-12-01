@@ -33,13 +33,13 @@ public class Employee {
 	
 	@NotBlank
     @Column(name="fullname", unique=true)
-	private String fullName;	
+	private String fullName;
 	
 	private String details;
 	private String telephone;	
 	private String cellphone;	
 	private String email;
-    private String password;   
+    private String password;      
     private String passwordHash;
     private String authority;    
     
@@ -68,7 +68,7 @@ public class Employee {
 
 
 	public Employee(@NotBlank String fullName, String details, String telephone, String cellphone, String email,
-			String password, String passwordHash, String authority, String idNumber, String userId, String skillsCategory, Date dateCreated,
+			String password, String passwordHash,String authority, String idNumber, String userId, String skillsCategory, Date dateCreated,
 			Long teamId, Integer enabled) {
 		super();
 		this.fullName = fullName;
@@ -77,7 +77,7 @@ public class Employee {
 		this.cellphone = cellphone;
 		this.email = email;
 		this.password = password;
-		this.passwordHash = passwordHash;
+		this.passwordHash=passwordHash;
 		this.authority = authority;
 		this.idNumber = idNumber;
 		this.userId = userId;
@@ -88,6 +88,7 @@ public class Employee {
 	}
 
 	
+
 
 	public String getPasswordHash() {
 		return passwordHash;
