@@ -45,9 +45,44 @@ public class CustomerOrder {
 	@Column(name = "selling_price")
 	private Double sellingPrice;
 
-	
+
+	@Column(name = "order_completed")
+	private Boolean orderCompleted=false;
+
+
+	@Column(name = "invoiced")
+	private Boolean invoiced=false;
 	
 
+	@Column(name = "payed")
+	private Boolean payed=false;
+
+
+	
+	
+	public Boolean getOrderCompleted() {
+		return orderCompleted;
+	}
+
+	public void setOrderCompleted(Boolean orderCompleted) {
+		this.orderCompleted = orderCompleted;
+	}
+
+	public Boolean getInvoiced() {
+		return invoiced;
+	}
+
+	public void setInvoiced(Boolean invoiced) {
+		this.invoiced = invoiced;
+	}
+
+	public Boolean getPayed() {
+		return payed;
+	}
+
+	public void setPayed(Boolean payed) {
+		this.payed = payed;
+	}
 
 	public String getCustomerName() {
 		return customerName;
@@ -132,8 +167,12 @@ public class CustomerOrder {
 		return "CustomerOrder [customerOrderId=" + customerOrderId + ", dateCreated=" + dateCreated + ", customerId="
 				+ customerId + ", customerName=" + customerName + ", productId=" + productId + ", productName="
 				+ productName + ", quantity=" + quantity + ", name=" + name + ", customerRequirements="
-				+ customerRequirements + ", sellingPrice=" + sellingPrice + "]";
+				+ customerRequirements + ", sellingPrice=" + sellingPrice + ", orderCompleted=" + orderCompleted
+				+ ", invoiced=" + invoiced + ", payed=" + payed + "]";
 	}
+
+
+
 
 
 

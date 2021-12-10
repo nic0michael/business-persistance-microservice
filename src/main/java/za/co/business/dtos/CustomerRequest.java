@@ -2,28 +2,23 @@ package za.co.business.dtos;
 
 import java.sql.Timestamp;
 
-
+import javax.persistence.Column;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
 
 public class CustomerRequest {
 
+
 	private Long customerId;
 	private Timestamp dateCreated;
-	private String name;
-	private Integer tableNr;
-	private String carRegristrationNr;
+	private String name; 
+	private Long credits;
 	private String deliveryAddress;
 	private String invoiceAddress;
 	private String emailAddress;
 	private String cellPhone;
-	private Long credits;
 	
-	
-	public Long getCredits() {
-		return credits;
-	}
-	public void setCredits(Long credits) {
-		this.credits = credits;
-	}
 	public Long getCustomerId() {
 		return customerId;
 	}
@@ -42,17 +37,11 @@ public class CustomerRequest {
 	public void setName(String name) {
 		this.name = name;
 	}
-	public Integer getTableNr() {
-		return tableNr;
+	public Long getCredits() {
+		return credits;
 	}
-	public void setTableNr(Integer tableNr) {
-		this.tableNr = tableNr;
-	}
-	public String getCarRegristrationNr() {
-		return carRegristrationNr;
-	}
-	public void setCarRegristrationNr(String carRegristrationNr) {
-		this.carRegristrationNr = carRegristrationNr;
+	public void setCredits(Long credits) {
+		this.credits = credits;
 	}
 	public String getDeliveryAddress() {
 		return deliveryAddress;
@@ -81,12 +70,10 @@ public class CustomerRequest {
 	@Override
 	public String toString() {
 		return "CustomerRequest [customerId=" + customerId + ", dateCreated=" + dateCreated + ", name=" + name
-				+ ", tableNr=" + tableNr + ", carRegristrationNr=" + carRegristrationNr + ", deliveryAddress="
-				+ deliveryAddress + ", invoiceAddress=" + invoiceAddress + ", emailAddress=" + emailAddress
-				+ ", cellPhone=" + cellPhone + ", credits=" + credits + "]";
+				+ ", credits=" + credits + ", deliveryAddress=" + deliveryAddress + ", invoiceAddress=" + invoiceAddress
+				+ ", emailAddress=" + emailAddress + ", cellPhone=" + cellPhone + "]";
 	}
-
-
+	
 	
 
 }

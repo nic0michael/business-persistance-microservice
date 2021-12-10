@@ -2,19 +2,38 @@ package za.co.business.dtos;
 
 import java.sql.Timestamp;
 
+import javax.persistence.Column;
+
 public class ProductRequest {
 
 	private Long productId;
 	private Timestamp dateCreated;
 	private String name;
+	private String productCode;
 	private String description;
 	private Long supplierId;
+	private String supplierName;
 	private Long FileImageId;
 	private Long stockQuantity;
 	private Long reorderLevel;
 	private Long economicOrderQuantity;	
 	private Double costPrice;
 	private Double sellingPrice;
+	
+	
+	
+	public String getSupplierName() {
+		return supplierName;
+	}
+	public void setSupplierName(String supplierName) {
+		this.supplierName = supplierName;
+	}
+	public String getProductCode() {
+		return productCode;
+	}
+	public void setProductCode(String productCode) {
+		this.productCode = productCode;
+	}
 	public Long getProductId() {
 		return productId;
 	}
@@ -81,14 +100,20 @@ public class ProductRequest {
 	public void setSellingPrice(Double sellingPrice) {
 		this.sellingPrice = sellingPrice;
 	}
+	
+	
 	@Override
 	public String toString() {
 		return "ProductRequest [productId=" + productId + ", dateCreated=" + dateCreated + ", name=" + name
-				+ ", description=" + description + ", supplierId=" + supplierId + ", FileImageId=" + FileImageId
-				+ ", stockQuantity=" + stockQuantity + ", reorderLevel=" + reorderLevel + ", economicOrderQuantity="
-				+ economicOrderQuantity + ", costPrice=" + costPrice + ", sellingPrice=" + sellingPrice + "]";
+				+ ", productCode=" + productCode + ", description=" + description + ", supplierId=" + supplierId
+				+ ", supplierName=" + supplierName + ", FileImageId=" + FileImageId + ", stockQuantity=" + stockQuantity
+				+ ", reorderLevel=" + reorderLevel + ", economicOrderQuantity=" + economicOrderQuantity + ", costPrice="
+				+ costPrice + ", sellingPrice=" + sellingPrice + "]";
 	}
+	
 
+
+	
 	
 
 }
