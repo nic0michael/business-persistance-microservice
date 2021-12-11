@@ -1,6 +1,5 @@
 package za.co.business.utils;
 
-
 import org.springframework.security.crypto.encrypt.Encryptors;
 
 import javax.crypto.KeyGenerator;

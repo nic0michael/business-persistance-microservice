@@ -2,6 +2,7 @@ package za.co.business.controllers;
 
 import java.util.List;
 
+import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,9 +15,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import za.co.business.dtos.ProductRequest;
-import za.co.business.dtos.SuppliertRequest;
-import za.co.business.logic.ProductLogicProcessor;
-import za.co.business.logic.SupplierLogicProcessor;
+import za.co.business.dtos.SupplierRequest;
+import za.co.business.logic.BusinessLogicProcessor;
 import za.co.business.model.Supplier;
 
 @RestController
@@ -25,37 +25,53 @@ public class SupplierController {
 	private static final Logger log = LoggerFactory.getLogger(SupplierController.class);
 
 	@Autowired
-	SupplierLogicProcessor processor;
+	BusinessLogicProcessor processor;
 	
 	@PostMapping(value = "/list", 
 			produces = { MediaType.APPLICATION_XML_VALUE, MediaType.APPLICATION_JSON_VALUE })
 	public List<Supplier>  getSuppliers(){
-		return processor.getSuppliers();
+		return processor.findAllSuppliersSortedByName();
 	}
 	
 	@PostMapping(value = "/list/{id}", 
 			produces = { MediaType.APPLICATION_XML_VALUE, MediaType.APPLICATION_JSON_VALUE }) 
-	public Supplier  findBySupplierId(@PathVariable String id){		
-		return processor.findBySupplierId(id);
+	public Supplier  findBySupplierId(@PathVariable String id){
+		Supplier supplier=null;
+		if(StringUtils.isNoneEmpty(id)&& StringUtils.isNumeric(id)) {
+			Long supplierId=Long.parseLong(id);		
+			supplier= processor.findSupplierBySupplierId(supplierId);
+		}
+		return supplier;
 	}
 
 	@PostMapping(value = "/delete/{id}")
-	public void delete(@RequestParam String id){	
-		processor.delete(id);
+	public void delete(@RequestParam String id){
+		if(StringUtils.isNoneEmpty(id)&& StringUtils.isNumeric(id)) {
+			Long supplierId=Long.parseLong(id);
+			processor.deleteSupplier(supplierId);
+		}
 	}
 	
 	@PostMapping(value = "/create", 
 			produces = { MediaType.APPLICATION_XML_VALUE, MediaType.APPLICATION_JSON_VALUE }, 
 			consumes = { MediaType.APPLICATION_XML_VALUE, MediaType.APPLICATION_JSON_VALUE })
-	public Supplier create(@RequestBody SuppliertRequest suppliertRequest) {
-		return processor.create(suppliertRequest);
+	public Supplier create(@RequestBody SupplierRequest request) {
+		return processor.saveSupplier(request);
 	}
 	
-	@PostMapping(value = "/update", 
+	@PostMapping(value = "/update/{id}", 
 			produces = { MediaType.APPLICATION_XML_VALUE, MediaType.APPLICATION_JSON_VALUE }, 
 			consumes = { MediaType.APPLICATION_XML_VALUE, MediaType.APPLICATION_JSON_VALUE })
-	public Supplier update(@RequestBody SuppliertRequest suppliertRequest) {
-		return processor.update(suppliertRequest);
+	public Supplier update(@RequestBody SupplierRequest request,@RequestParam String id){
+		Supplier supplier=null;
+	
+		if(StringUtils.isNoneEmpty(id)&& StringUtils.isNumeric(id)) {
+			Long supplierId=Long.parseLong(id);
+			supplier=processor.findSupplierBySupplierId(supplierId);
+			supplier=processor.updateSupplier(supplier, request);
+		}
+		 
+		 return supplier;
 	}
 
 

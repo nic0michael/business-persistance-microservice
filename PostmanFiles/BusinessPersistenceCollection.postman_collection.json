@@ -1,0 +1,287 @@
+{
+	"info": {
+		"_postman_id": "318f996f-485b-4123-a654-5c1101d86604",
+		"name": "BusinessPersistenceCollection",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "POST:  /customer/list",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json",
+						"type": "text"
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "{{BaseURL}}/customer/list",
+					"host": [
+						"{{BaseURL}}"
+					],
+					"path": [
+						"customer",
+						"list"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "POST: /customer/list/{{CustomerID}}",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json",
+						"type": "text"
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "{{BaseURL}}/customer/list/{{CustomerID}}",
+					"host": [
+						"{{BaseURL}}"
+					],
+					"path": [
+						"customer",
+						"list",
+						"{{CustomerID}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "POST: /customer-order/list",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json",
+						"type": "text"
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "{{BaseURL}}/customer-order/list",
+					"host": [
+						"{{BaseURL}}"
+					],
+					"path": [
+						"customer-order",
+						"list"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "POST: /customer-order/list/{{CustomerOrderID}}",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json",
+						"type": "text"
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "{{BaseURL}}/customer-order/list/{{CustomerOrderID}}",
+					"host": [
+						"{{BaseURL}}"
+					],
+					"path": [
+						"customer-order",
+						"list",
+						"{{CustomerOrderID}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "POST: /customer-order/listnotpaid/{{customerId}}",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json",
+						"type": "text"
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "{{BaseURL}}/customer-order/listnotpaid/{{CustomerID}}",
+					"host": [
+						"{{BaseURL}}"
+					],
+					"path": [
+						"customer-order",
+						"listnotpaid",
+						"{{CustomerID}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "POST: /customer-order/create",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json",
+						"type": "text"
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n        \"customerId\": 1,\r\n        \"customerName\": \"Table 1\",\r\n        \"productId\": 8,\r\n        \"productName\": \"Americano Coffee\",\r\n        \"quantity\": 3,\r\n        \"name\": null,\r\n        \"customerRequirements\": \"\",\r\n        \"sellingPrice\": 25.0,\r\n        \"orderCompleted\": false,\r\n        \"invoiced\": false,\r\n        \"payed\": false\r\n    }"
+				},
+				"url": {
+					"raw": "{{BaseURL}}/customer-order/create",
+					"host": [
+						"{{BaseURL}}"
+					],
+					"path": [
+						"customer-order",
+						"create"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "POST: /product/list",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json",
+						"type": "text"
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "{{BaseURL}}/product/list",
+					"host": [
+						"{{BaseURL}}"
+					],
+					"path": [
+						"product",
+						"list"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "POST: /product/list/1",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json",
+						"type": "text"
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "{{BaseURL}}/product/list/1",
+					"host": [
+						"{{BaseURL}}"
+					],
+					"path": [
+						"product",
+						"list",
+						"1"
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "BaseURL",
+			"value": "localhost:8085/business-persistance/v1"
+		},
+		{
+			"key": "CustomerID",
+			"value": "1"
+		},
+		{
+			"key": "CustomerOrderID",
+			"value": "1"
+		}
+	]
+}

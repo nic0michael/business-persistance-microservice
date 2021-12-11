@@ -40,12 +40,7 @@ public class EmployeeController {
 		return processor.findByEmployeeId(id);
 	}
 	
-	@PostMapping(value = "/auth", 
-			produces = { MediaType.APPLICATION_XML_VALUE, MediaType.APPLICATION_JSON_VALUE }, 
-			consumes = { MediaType.APPLICATION_XML_VALUE, MediaType.APPLICATION_JSON_VALUE })
-	public AuthenticationResponse authenticate(@RequestBody AuthenticationRequest authenticationRequest) {
-		return processor.authenticate(authenticationRequest);
-	}
+
 	
 
 }

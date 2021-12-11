@@ -43,50 +43,6 @@ public class EmployeeLogicProcessor {
 
 
 
-	public AuthenticationResponse authenticate(AuthenticationRequest authenticationRequest) {
-		AuthenticationResponse response = new AuthenticationResponse();
-		Employee employee =null;
-		String userId=null;
-		String password=null;
-		if(authenticationRequest!=null && StringUtils.isNotEmpty(authenticationRequest.getUserIdHash()) 
-				&& StringUtils.isNotEmpty(authenticationRequest.getPasswordHash()) ) {
-			
-			userId=decrypt(authenticationRequest.getUserIdHash());
-			password=decrypt(authenticationRequest.getPasswordHash());
-			employee = employeeRepository.findByUserId(userId);
-			
-			if(employee==null) {
-				response.setResponseCode(ErrorCodes.BUSINESS_FROM_DATABASE_FAILURE.getCode());
-				response.setResponseMessage(ErrorCodes.BUSINESS_FROM_DATABASE_FAILURE.getMessage());
-			} else  if(StringUtils.isNotEmpty(employee.getPassword()) && StringUtils.isNotEmpty(employee.getUserId())
-				&& password.equals(employee.getPassword()) 
-				&& userId.equals(employee.getUserId()) ){
-				
-					response.setResponseCode(ErrorCodes.SUCCESS.getCode());
-					response.setResponseMessage(ErrorCodes.SUCCESS.getMessage());
-					
-			}else{
-					response.setResponseCode(ErrorCodes.BUSINESS_FROM_DATABASE_FAILURE.getCode());
-					response.setResponseMessage(ErrorCodes.BUSINESS_FROM_DATABASE_FAILURE.getMessage());
-					
-				
-			}
-			
-		} else {
-			response.setResponseCode(ErrorCodes.BUSINESS_FROM_DATABASE_FAILURE.getCode());
-			response.setResponseMessage(ErrorCodes.BUSINESS_FROM_DATABASE_FAILURE.getMessage());		
-		}
-		
-		return response;
-		
-	}
-
-
-
-	private String decrypt(String value) {
-		return value;
-	}
-
 
 	
 /* for security reasons the following will not be allowed

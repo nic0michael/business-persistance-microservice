@@ -8,12 +8,14 @@ import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.UUID;
 
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 import za.co.business.dtos.EmployeePersistRequest;
 import za.co.business.model.Employee;
@@ -33,7 +35,23 @@ public class Utils {
 	@Value("${project.time.rsa.format}")
 	static String timeRsaFormat;	// "HH:mm:ss"
 
+	@Autowired
+	public static BCryptPasswordEncoder passwordEncoder;
+	
 
+	public static String makeDiscountVoucherCode() {
+		String discountVoucherCode=null;
+		Date dateNow = new Date();
+		String pattern = "yyyy-MM-dd";
+		SimpleDateFormat formatter = new SimpleDateFormat(pattern);
+		String uuid=generateUUID().substring(0, 8);
+		discountVoucherCode = formatter.format(dateNow)+"_"+uuid;
+		return discountVoucherCode;
+	}
+
+	public static String generateUUID() {
+		return UUID.randomUUID().toString();
+	}
 
 	/**
 	 * project.date.rsa.format=dd-MM-yyyy
@@ -165,7 +183,15 @@ public class Utils {
 		return employeePersistRequests;
 	}
 
+	public static List<Employee> makeEmployeeList(List<EmployeePersistRequest> employeePersistRequests) {
+		List<Employee> employees = new ArrayList<>();
+		for (EmployeePersistRequest employeePersistRequest : employeePersistRequests) {
+			Employee employee = convertToEmployee(employeePersistRequest);
+			employees.add(employee);
+		}
 
+		return employees;
+	}
 
 	public static EmployeePersistRequest convertToEmployeePersistRequest(Employee employee) {
 		log.info("ANTENNA : Utils : convertToEmployeePersistRequest : Employee :" + employee);
@@ -224,11 +250,45 @@ public class Utils {
 		return employeePersistRequest;
 	}
 
-	public static Employee convertToEmployee(EmployeePersistRequest employeePersistRequest, Employee employee) {
-		// TODO Auto-generated method stub
-		return null;
+	public static Employee convertToEmployee(EmployeePersistRequest employeePersistRequest) {
+		Employee employee = convertToEmployee(employeePersistRequest, new Employee());
+		return employee;
 	}
 
+	public static Employee convertToEmployee(EmployeePersistRequest employeePersistRequest, Employee employee) {		
+		log.info("ANTENNA : Utils : convertToEmployee : EmployeePersistRequest :" + employeePersistRequest);
+		employee.setFullName(employeePersistRequest.getFullName().toUpperCase());
+		employee.setIdNumber(employeePersistRequest.getIdNumber());
+		employee.setDetails(employeePersistRequest.getDetails());
+		employee.setTelephone(employeePersistRequest.getTelephone());
+		employee.setCellphone(employeePersistRequest.getCellphone());
+		employee.setEmail(employeePersistRequest.getEmail());
+	    employee.setPassword(employeePersistRequest.getPassword());
+	    employee.setAuthority(employeePersistRequest.getAuthority());
+	    employee.setUserId(employeePersistRequest.getUserId());
+	    
+	    if(StringUtils.isNotEmpty(employeePersistRequest.getDateCreated())){
+	    	employee.setDateCreated(convertStringToDate(employeePersistRequest.getDateCreated()));
+	    }
 
+		if (StringUtils.isNotEmpty(employeePersistRequest.getPassword())) {
+			if (passwordEncoder == null) {
+				passwordEncoder = new BCryptPasswordEncoder();
+			}
 
+			employee.setPassword(passwordEncoder.encode(employeePersistRequest.getPassword()));
+		}
+
+		if (StringUtils.isNotEmpty(employeePersistRequest.getEnabled()) &&
+								  "1".equals(employeePersistRequest.getEnabled())) {
+			employee.setEnabled(1);
+		}
+		else {
+			employee.setEnabled(0);
+		}
+
+		log.info("ANTENNA : Utils : convertToEmployee : Employee :" + employee);
+		
+		return employee;
+	}
 }
