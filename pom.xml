@@ -3,7 +3,7 @@
 		 xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 			   xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
-	<groupId>za.co.kanban</groupId>
+	<groupId>za.co.nico</groupId>
 	<artifactId>business-persistance-microservice</artifactId>
 	<name>business-persistance-microservice</name>
 	<description>Business with MySQL in Spring Boot </description>
@@ -94,7 +94,7 @@
 	</dependencies>
 
 	<build>
-	<finalName>antenna-dashboard</finalName>
+	<finalName>business-persistance-microservice</finalName>
 		<plugins>
 			<plugin>
 				<groupId>org.springframework.boot</groupId>
