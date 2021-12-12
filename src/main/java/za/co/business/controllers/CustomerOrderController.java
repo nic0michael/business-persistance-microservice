@@ -1,5 +1,7 @@
 package za.co.business.controllers;
 
+import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import org.apache.commons.lang3.StringUtils;
@@ -62,6 +64,74 @@ public class CustomerOrderController {
 			Long customerOrderId=Long.parseLong(id);
 			processor.deleteCustomerOrder(customerOrderId);
 		}
+	}
+	
+	@PostMapping(value = "/addorder/{id}", 
+			produces = { MediaType.APPLICATION_XML_VALUE, MediaType.APPLICATION_JSON_VALUE }, 
+			consumes = { MediaType.APPLICATION_XML_VALUE, MediaType.APPLICATION_JSON_VALUE })
+	public CustomerOrder addOrder(@RequestBody CustomerOrderRequest request,@RequestParam String id){
+		Customer customer=null;
+		if(StringUtils.isNotEmpty(id)&& StringUtils.isNumeric(id)) {
+			Long customerId=Long.parseLong(id);
+			customer=processor.findCustomerByCustomerId(customerId);
+			if(customer!=null){
+				request.setCustomerName(customer.getName());
+				request.setCustomerId(customerId);
+			}
+		}
+		return processor.saveCustomerOrder(request);
+	}
+	
+
+	@PostMapping(value = "/invoiceorder/{id}", 
+			produces = { MediaType.APPLICATION_XML_VALUE, MediaType.APPLICATION_JSON_VALUE }, 
+			consumes = { MediaType.APPLICATION_XML_VALUE, MediaType.APPLICATION_JSON_VALUE })
+	public List<CustomerOrder> invoiceOrder(@RequestBody CustomerOrderRequest request,@RequestParam String id){
+		Customer customer=null;
+		Date date=new Date();
+		double totalSellingPrice=0;
+		List<CustomerOrder> customerOrders =null;
+		
+		if(StringUtils.isNotEmpty(id)&& StringUtils.isNumeric(id)) {
+			Long customerId=Long.parseLong(id);
+			customer=processor.findCustomerByCustomerId(customerId);
+			customerOrders = processor.findAllCustomerOrdersByCustomerNotPaid(customer);
+			if(customerOrders!=null) {
+				for (CustomerOrder customerOrder : customerOrders) {
+					if(customerOrder.getSellingPrice()!=null&& customerOrder.getQuantity()!=null) {
+						totalSellingPrice+=(customerOrder.getSellingPrice()*customerOrder.getQuantity());
+					}
+				}
+			}
+		}
+		return customerOrders;
+	}
+	
+	@PostMapping(value = "/payorder/{id}", 
+			produces = { MediaType.APPLICATION_XML_VALUE, MediaType.APPLICATION_JSON_VALUE }, 
+			consumes = { MediaType.APPLICATION_XML_VALUE, MediaType.APPLICATION_JSON_VALUE })
+	public List<CustomerOrder> payorder(@RequestBody CustomerOrderRequest request,@RequestParam String id){
+		Date date=new Date();
+		double totalSellingPrice=0;
+		Customer customer=null;
+		List<CustomerOrder> customerOrderList = new ArrayList<CustomerOrder>();
+		
+		if(StringUtils.isNotEmpty(id)&& StringUtils.isNumeric(id)) {
+			Long customerId=Long.parseLong(id);
+			customer=processor.findCustomerByCustomerId(customerId);
+			List<CustomerOrder> customerOrders = processor.findAllCustomerOrdersByCustomerNotPaid(customer);
+			if(customerOrders!=null) {
+				for (CustomerOrder customerOrder : customerOrders) {
+					if(customerOrder.getSellingPrice()!=null&& customerOrder.getQuantity()!=null) {
+						totalSellingPrice+=(customerOrder.getSellingPrice()*customerOrder.getQuantity());
+						customerOrder.setPayed(true);
+						processor.saveCustomerOrder(customerOrder);
+						customerOrderList.add(customerOrder);
+					}
+				}
+			}
+		}
+		return customerOrderList;
 	}
 	
 	@PostMapping(value = "/create", 
