@@ -9,19 +9,31 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.data.domain.Sort;
+import org.springframework.data.repository.CrudRepository;
 
+import za.co.business.dtos.ConfigurationRequest;
 import za.co.business.dtos.CustomerOrderRequest;
 import za.co.business.dtos.CustomerRequest;
+import za.co.business.dtos.GratuityRequest;
+import za.co.business.dtos.InventoryRequest;
 import za.co.business.dtos.ProductRequest;
 import za.co.business.dtos.SupplierOrderRequest;
 import za.co.business.dtos.SupplierRequest;
+import za.co.business.model.Configuration;
 import za.co.business.model.Customer;
 import za.co.business.model.CustomerOrder;
+import za.co.business.model.Employee;
+import za.co.business.model.Gratuity;
+import za.co.business.model.Inventory;
 import za.co.business.model.Product;
 import za.co.business.model.Supplier;
 import za.co.business.model.SupplierOrder;
+import za.co.business.repositories.ConfigurationRepository;
 import za.co.business.repositories.CustomerOrderRepository;
 import za.co.business.repositories.CustomerRepository;
+import za.co.business.repositories.EmployeeRepository;
+import za.co.business.repositories.GratuityRepository;
+import za.co.business.repositories.InventoryRepository;
 import za.co.business.repositories.ProductRepository;
 import za.co.business.repositories.SupplierOrderRepository;
 import za.co.business.repositories.SupplierRepository;
@@ -45,6 +57,23 @@ public class BusinessLogicProcessor {
 	
 	@Autowired
 	SupplierOrderRepository suppOrdRep;
+	
+	@Autowired
+	EmployeeRepository employeeRep;
+	
+	@Autowired
+	ConfigurationRepository confRep;
+	
+	@Autowired
+	GratuityRepository gratuityRepository;
+	
+	@Autowired
+	InventoryRepository inventoryRepository;
+	
+
+	private String companyName = null;
+	private String branchName  = null;
+	private String branchPhone = null;
 	
 
 	public List<Customer> findAllCustomersSortedByName() {
@@ -113,12 +142,26 @@ public class BusinessLogicProcessor {
 	}
 
 	public CustomerOrder saveCustomerOrder(CustomerOrderRequest request) {
+		if(request!=null && request.getEmployeeId() !=null) {
+			Long employeeId = request.getEmployeeId();
+			Employee employee =employeeRep.findByEmployeeId(employeeId);
+			if(employee!=null) {
+				request.setEmployeeFullname(employee.getFullName());
+			}
+		}
 		CustomerOrder customerOrder=RequestResponseUtils.makeCustomerOrder(request);
 		customerOrder=custOrdRep.save(customerOrder);
 		return customerOrder;
 	}
 
 	public CustomerOrder updateCustomerOrder(CustomerOrder customerOrder, CustomerOrderRequest request) {
+		if(request!=null && request.getEmployeeId() !=null) {
+			Long employeeId = request.getEmployeeId();
+			Employee employee =employeeRep.findByEmployeeId(employeeId);
+			if(employee!=null) {
+				request.setEmployeeFullname(employee.getFullName());
+			}
+		}
 		customerOrder=RequestResponseUtils.updateCustomerOrder(customerOrder,request);
 		customerOrder=saveCustomerOrder(customerOrder);
 		return customerOrder;
@@ -220,6 +263,62 @@ public class BusinessLogicProcessor {
 		return supplierOrder;
 	}
 
+
+	public List<Employee> findAllActiveEmployees() {
+		List<Employee> activeEmployees=new ArrayList<>();
+		List<Employee> employees=employeeRep.findAll(sortByFullnameAsc());
+		for (Employee employee : employees) {
+			if(employee!=null && employee.getEnabled()!=0) {
+				activeEmployees.add(employee);
+			}
+		}
+		return activeEmployees;
+	}
+
+
+
+	public Configuration saveConfiguration(ConfigurationRequest request) {
+		Configuration configuration=RequestResponseUtils.makeConfiguration(request);	
+		
+		return confRep.save(configuration);
+	}
+
+	public List<Configuration> findAllConfigurations() {
+		List<Configuration> configurations=confRep.findAll();
+		return configurations;
+	}
+	
+
+
+	public Configuration findConfigurationByConfigurationId(Long configurationId) {
+		Configuration configuration =confRep.findByConfigurationId(configurationId);
+		return configuration;
+	}
+	
+
+	public Configuration getConfiguration() {
+		Configuration configuration = null;
+		List<Configuration>  configurations = findAllConfigurations();
+		for (Configuration configuration2 : configurations) {
+			if(null != configuration2) {
+				configuration =configuration2;
+			}
+		}
+		
+		return configuration;
+	}
+
+	public Configuration updateConfiguration(Configuration configuration, ConfigurationRequest request) {
+		configuration=RequestResponseUtils.updateConfiguration(configuration, request);
+		confRep.save(configuration);
+		return configuration;
+	}
+	
+
+	public void deleteConfiguration(Long configurationtId) {
+		Configuration configuration =confRep.findByConfigurationId(configurationtId);
+		confRep.delete(configuration);
+	}
 	
 	
 	private Sort sortByDateCreatedAsc() {
@@ -233,6 +332,115 @@ public class BusinessLogicProcessor {
 	private Sort sortByNameAsc() {
         return new Sort(Sort.Direction.ASC, "name");
     }
+
+
+
+	private Sort sortByFullnameAsc() {
+        return new Sort(Sort.Direction.ASC, "fullName");
+    }
+
+	public void addGraduity(GratuityRequest request) {
+		Gratuity gratuity = RequestResponseUtils.makeGratuity(request);
+		if(null!=gratuity) {
+			gratuityRepository.save(gratuity);
+		}
+	}
+
+	public List<Gratuity> findAllGraduities() {
+		List<Gratuity> gratuities = gratuityRepository.findAll(sortByDateCreatedDesc());
+		if(gratuities!=null) {
+			log.info("gratuities has "+gratuities.size()+" records");
+		} else {
+			log.info("gratuities is null ");			
+		}
+		return gratuities;
+	}
+
+	public void deleteGratuity(Long gratuityId) {
+		Gratuity gratuity = gratuityRepository.findByGratuityId(gratuityId);
+		gratuityRepository.delete(gratuity);
+	}
+
+	public List<Inventory> findAllInventory() {
+		List<Inventory> inventoryList = inventoryRepository.findAll();
+		return inventoryList;
+	}
+
+	public void deleteInventory(Long inventoryId) {
+		Inventory inventory = inventoryRepository.findByInventoryId(inventoryId);
+		inventoryRepository.delete(inventory);		
+	}
+
+	public Inventory findInventoryIdByinventoryId(Long inventoryId) {
+		Inventory inventory = inventoryRepository.findByInventoryId(inventoryId);
+		return inventory;
+	}
+
+	public Inventory saveInventory(InventoryRequest request) {
+		Inventory inventory = null;
+		if(request!=null) {
+			
+			inventory = RequestResponseUtils.makeInventory(request);
+			if(inventory!=null) {
+				inventoryRepository.save(inventory);	
+			}
+		}
+		return inventory;
+	}
+
+	public Inventory updateInventory(InventoryRequest request) {
+		Inventory inventory = null;
+		if(request!=null) {
+			Long inventoryId = request.getInventoryId();
+			inventory = findInventoryIdByinventoryId(inventoryId);
+			if(null != inventory) {
+				inventory = RequestResponseUtils.updateInventory(inventory, request);
+				inventoryRepository.save(inventory);	
+				log.info("--> inventory updated : "+inventory);
+			}
+			
+		}
+		return inventory;
+	}
+
+	public String getCompanyName() {
+		if(null==companyName) {
+			setConfigurationVariables();
+		}
+		return companyName;
+	}
+
+	public String getBranchName() {
+		if(null==branchName) {
+			setConfigurationVariables();
+		}
+		return branchName;
+	}
+
+	public String getBranchPhone() {
+		if(null==branchPhone) {
+			setConfigurationVariables();
+		}
+		return branchPhone;
+	}
+
+
+	private void setConfigurationVariables() {
+		
+		List<Configuration> configurations =confRep.findAll();
+		Configuration configuration=null;
+		for (Configuration theConfiguration : configurations) {
+			if(null!= theConfiguration) {
+				configuration=theConfiguration;
+				break;
+			}
+		}
+		if(null!= configuration) {
+			companyName = configuration.getCompanyName();
+			branchName  = configuration.getBranchName();
+			branchPhone  = configuration.getBranchPhone();
+		}
+	}
 
 
 }

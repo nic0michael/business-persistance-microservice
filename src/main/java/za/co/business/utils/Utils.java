@@ -39,13 +39,14 @@ public class Utils {
 	public static BCryptPasswordEncoder passwordEncoder;
 	
 
-	public static String makeDiscountVoucherCode() {
+	public static String makeDiscountVoucherCode(double totalSellingPrice, double dISCOUNT_PERCENTAGE) {
 		String discountVoucherCode=null;
 		Date dateNow = new Date();
 		String pattern = "yyyy-MM-dd";
 		SimpleDateFormat formatter = new SimpleDateFormat(pattern);
 		String uuid=generateUUID().substring(0, 8);
-		discountVoucherCode = formatter.format(dateNow)+"_"+uuid;
+		totalSellingPrice=totalSellingPrice*(dISCOUNT_PERCENTAGE/100D);
+		discountVoucherCode = formatter.format(dateNow)+"_"+uuid+"D"+totalSellingPrice;
 		return discountVoucherCode;
 	}
 
@@ -197,11 +198,15 @@ public class Utils {
 		log.info("ANTENNA : Utils : convertToEmployeePersistRequest : Employee :" + employee);
 		EmployeePersistRequest employeePersistRequest = new EmployeePersistRequest();
 		if (employee.getEmployeeId() != null) {
-			employeePersistRequest.setEmployeeId(employee.getEmployeeId().toString());
+			employeePersistRequest.setEmployeeId(employee.getEmployeeId().toString()); // employeeNumber
 		}
 
 		if (employee.getFullName() != null) {
 			employeePersistRequest.setFullName(employee.getFullName().toUpperCase());
+		}
+
+		if (employee.getEmployeeNumber() != null) {
+			employeePersistRequest.setFullName(employee.getEmployeeNumber());
 		}
 		
 		if (employee.getIdNumber() != null) {
@@ -258,6 +263,7 @@ public class Utils {
 	public static Employee convertToEmployee(EmployeePersistRequest employeePersistRequest, Employee employee) {		
 		log.info("ANTENNA : Utils : convertToEmployee : EmployeePersistRequest :" + employeePersistRequest);
 		employee.setFullName(employeePersistRequest.getFullName().toUpperCase());
+		employee.setEmployeeNumber(employeePersistRequest.getEmployeeNumber());
 		employee.setIdNumber(employeePersistRequest.getIdNumber());
 		employee.setDetails(employeePersistRequest.getDetails());
 		employee.setTelephone(employeePersistRequest.getTelephone());
